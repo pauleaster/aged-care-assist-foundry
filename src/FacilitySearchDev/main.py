@@ -22,6 +22,7 @@ def main():
     mcp_tool = client.get_mcp_tool(
         name="aged-care-mcp",
         url=os.environ["AGED_CARE_MCP_URL"],
+        approval_mode="never_require",
         allowed_tools=[
             "search_facilities",
             "get_facility_details",
