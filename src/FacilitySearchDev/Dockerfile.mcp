@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY aged_care_mcp ./aged_care_mcp
+COPY mcp_main.py .
+
+# Runtime data is supplied from the local build context and remains excluded from Git.
+COPY data ./data
+
+ENV PORT=8000
+ENV AGED_CARE_JSONL_PATH=/app/data/aged_care_facilities_state.jsonl
+
+EXPOSE 8000
+
+CMD ["python", "mcp_main.py"]

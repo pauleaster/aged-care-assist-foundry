@@ -6,6 +6,10 @@
 .env.*
 !.env.example
 !.env.template
+.local
+**/.local
+.local/*
+**/.local/*
 
 # Common local secret/config artifacts
 local.settings.json
