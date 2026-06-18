@@ -1,2 +1,4 @@
 agent-framework>=1.2.2
 agent-framework-foundry-hosting
+mcp[cli]==1.27.2
+pydantic==2.13.4

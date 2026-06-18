@@ -18,3 +18,9 @@ secrets.json
 # Generated diffs / scratch files
 *.diff
 **/data/*
+
+# python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
