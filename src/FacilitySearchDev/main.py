@@ -19,6 +19,16 @@ def main():
         credential=DefaultAzureCredential(),
     )
 
+    mcp_tool = client.get_mcp_tool(
+        name="aged-care-mcp",
+        url=os.environ["AGED_CARE_MCP_URL"],
+        allowed_tools=[
+            "search_facilities",
+            "get_facility_details",
+            "get_rooms_for_facility",
+        ],
+    )
+
     agent = Agent(
         client=client,
         instructions=(
@@ -33,6 +43,7 @@ def main():
             "connected, answer only from retrieved data and clearly state any "
             "limitations."
         ),
+        tools=[mcp_tool],
         # History will be managed by the hosting infrastructure, thus there
         # is no need to store history by the service. Learn more at:
         # https://developers.openai.com/api/reference/resources/responses/methods/create
