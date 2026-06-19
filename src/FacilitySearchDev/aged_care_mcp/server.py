@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,9 @@ from mcp.server.fastmcp import FastMCP
 
 from aged_care_mcp.repository import FacilityRepository
 
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 mcp = FastMCP(
     "aged-care-facilities",
@@ -62,12 +66,29 @@ def search_facilities(
         max_dap: Optional maximum daily accommodation payment.
         exclude_shared_rooms: If true, only match non-shared/single-occupancy rooms.
     """
+    logger.info(
+        "search_facilities called with query=%r suburb=%r postcode=%r state=%r "
+        "limit=%d min_star_rating=%r available_only=%r min_rad=%r max_rad=%r "
+        "min_dap=%r max_dap=%r exclude_shared_rooms=%r",
+        query,
+        suburb,
+        postcode,
+        state,
+        limit,
+        min_star_rating,
+        available_only,
+        min_rad,
+        max_rad,
+        min_dap,
+        max_dap,
+        exclude_shared_rooms,
+    )
     limit = max(1, min(limit, 50))
 
     if min_star_rating is not None:
         min_star_rating = max(1, min(min_star_rating, 5))
 
-    return repo.search_facilities(
+    results = repo.search_facilities(
         query=query,
         suburb=suburb,
         postcode=postcode,
@@ -82,6 +103,10 @@ def search_facilities(
         exclude_shared_rooms=exclude_shared_rooms,
     )
 
+    logger.info("search_facilities returned %d result(s)", len(results))
+    logger.info("search_facilities output: %s", results)
+
+    return results
 
 @mcp.tool()
 def get_facility_details(facility_id: str) -> dict[str, Any]:
